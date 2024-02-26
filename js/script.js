@@ -64,6 +64,32 @@ const handleTshirt = () => {
 
 handleTshirt();
 
+//register for activities 
+
+const activityFieldset = document.querySelector("#activities");
+const costElement = document.querySelector("#activities-cost");
+let totalPrice = 0;
+
+activityFieldset.addEventListener('change', (event) => {
+    const element = event.target;
+    const elementPrice = Number(element.dataset.cost);
+    if (element.checked) {
+        totalPrice += elementPrice;
+        //update the DOM with the new price 
+        costElement.innerHTML = `Total: $${totalPrice}`;
+    } else {
+        totalPrice -= elementPrice;
+        //update the DOM with the new price 
+        costElement.innerHTML = `Total: $${totalPrice}`;
+    }
+})
+
+
+
+
+
+
+
 
 
 
