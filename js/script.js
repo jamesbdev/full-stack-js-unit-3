@@ -26,6 +26,18 @@ const displayTextField = () => {
 
 displayTextField();
 
+const handleTshirt = () => {
+    const colorSelect = document.querySelector("#color");
+    colorSelect.setAttribute("disabled", "true");
+
+    const designSelect = document.querySelector("#design");
+    designSelect.addEventListener("change", (event) => {
+        console.log(event.target);
+    })
+}
+
+handleTshirt();
+
 
 
 
