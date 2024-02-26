@@ -28,11 +28,37 @@ displayTextField();
 
 const handleTshirt = () => {
     const colorSelect = document.querySelector("#color");
-    colorSelect.setAttribute("disabled", "true");
-
     const designSelect = document.querySelector("#design");
+    //hide the color select when no design is selected
+    colorSelect.setAttribute("disabled", "true");
+ 
+
     designSelect.addEventListener("change", (event) => {
-        console.log(event.target);
+        //get the selected option
+        const selectedDesign = event.target.querySelector("option[selected]");
+        //enable the color select element
+        colorSelect.removeAttribute("disabled");
+
+        const displayColor = (event) => {
+          const designOptions = designSelect.querySelectorAll("option");
+          const colorOptions = colorSelect.querySelectorAll("option");
+          //loop through design options
+          designOptions.forEach(option => {
+            if(option.selected) {
+                const selectedValue = option.value;
+                //hide all options that have a data-attribute of heart-js 
+                colorOptions.forEach(color => {
+                  if(color.dataset.theme !== selectedValue) {
+                    color.setAttribute("hidden", "");
+                  } else {
+                    color.removeAttribute("hidden");
+                  }
+                })
+               
+            }
+          })
+        }
+        displayColor();
     })
 }
 
