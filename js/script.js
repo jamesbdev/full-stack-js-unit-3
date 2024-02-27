@@ -82,6 +82,7 @@ activityFieldset.addEventListener("change", (event) => {
 });
 
 
+
 //shows or hides the credit card / Paypal / Bitcoin sections when user selects a payment options
 const handleCreditCard = () => {
   const paymentSelect = document.querySelector("#payment");
@@ -132,7 +133,6 @@ handleCreditCard();
 const form = document.querySelector("form");
 
 form.addEventListener("submit", (event) => {
-
   //handle validation for the name input field
   const validateName = () => {
     const nameHint = document.querySelector("#name-hint");
@@ -250,11 +250,24 @@ form.addEventListener("submit", (event) => {
 
   validateCard();
 
-  //add focus event listener to input checkboxes
-    //when focused add .focus class to the checkbox input parent label element
-
-  //add blur event listener to input checkboxes
-    //when blured remove .focus class from the checkbox input parent label element
 
 
 });
+
+//adds focus state when checkbox inputs are in focus using tab
+const addFocusState = () => {
+    const activities = document.querySelectorAll('#activities-box input[type="checkbox"]');
+    activities.forEach(input => {
+      //add a focus class when element is focused
+      input.addEventListener('focus', (event) => {
+        //add a focus class to the parent label element
+        input.closest("label").classList.add('focus');
+      });
+      //remove focus class when element is blurred
+      input.addEventListener("blur", (event) => {
+        input.closest("label").classList.remove('focus');
+      });
+    });
+}
+
+addFocusState();
