@@ -84,6 +84,54 @@ activityFieldset.addEventListener('change', (event) => {
     }
 })
 
+const handleCreditCard = () => {
+  const paymentSelect = document.querySelector("#payment");
+  const paymentOptions = paymentSelect.querySelectorAll("option");
+  const payPalSection = document.querySelector("#paypal");
+  const creditCardSection = document.querySelector("#credit-card");
+  const bitCoinSection = document.querySelector("#bitcoin");
+
+//select the credit card option by default
+  paymentOptions.forEach(option => {
+    if(option.value == "credit-card") {
+        option.selected = true;
+    }
+  })
+  //hide the paypal section
+  payPalSection.style.display = "none";
+  //hide the bitcoin section
+  bitCoinSection.style.display = "none";
+
+  //hide or show the correct section depending on user selected option
+  paymentSelect.addEventListener("change", (event) => {
+    const optionValue = event.target.value;
+    if (optionValue == "credit-card") {
+       //hide the paypal section
+       payPalSection.style.display = "none";
+       //hide the bitcoin section
+       bitCoinSection.style.display = "none";
+       //show credit card section
+       creditCardSection.style.display = "block";
+    } else if (optionValue == "paypal") {
+        //hide credit card and bitcoin sections
+        creditCardSection.style.display = "none";
+        bitCoinSection.style.display = "none";
+        //display paypal section
+        payPalSection.style.display = "block";
+    } else {
+      //hide paypal and credit card section
+      creditCardSection.style.display = "none";
+      payPalSection.style.display = "none";
+      //display bitcoin section
+      bitCoinSection.style.display = "block";
+    }
+  })
+}
+
+handleCreditCard();
+
+
+
 
 
 
