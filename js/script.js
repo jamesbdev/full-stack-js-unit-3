@@ -81,6 +81,8 @@ activityFieldset.addEventListener("change", (event) => {
   }
 });
 
+
+//shows or hides the credit card / Paypal / Bitcoin sections when user selects a payment options
 const handleCreditCard = () => {
   const paymentSelect = document.querySelector("#payment");
   const paymentOptions = paymentSelect.querySelectorAll("option");
@@ -130,6 +132,8 @@ handleCreditCard();
 const form = document.querySelector("form");
 
 form.addEventListener("submit", (event) => {
+
+  //handle validation for the name input field
   const validateName = () => {
     const nameHint = document.querySelector("#name-hint");
     //validate the name input
@@ -146,7 +150,7 @@ form.addEventListener("submit", (event) => {
   };
 
   validateName();
-
+  //handles the validation for the email input field
   const validateEmail = () => {
     const emailInputValue = document.querySelector("#email").value;
     const emailRegex = new RegExp(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
@@ -178,7 +182,7 @@ form.addEventListener("submit", (event) => {
 
   validateActivity(totalPrice);
 
-  //contains logic to validate the card number, zip code and card verification value
+  //contains logic to validate the card number, zip code and CVV
   const validateCard = () => {
     const paymentSelect = document.querySelector("#payment");
     const paymentOptions = paymentSelect.querySelectorAll("option");
@@ -245,4 +249,12 @@ form.addEventListener("submit", (event) => {
   };
 
   validateCard();
+
+  //add focus event listener to input checkboxes
+    //when focused add .focus class to the checkbox input parent label element
+
+  //add blur event listener to input checkboxes
+    //when blured remove .focus class from the checkbox input parent label element
+
+
 });
