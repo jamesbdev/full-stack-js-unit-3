@@ -165,6 +165,20 @@ form.addEventListener("submit", (event) => {
     }
     validateEmail();
 
+   //show the error message if no activities are selected
+    const validateActivity = (total) => {
+       const activityHint = document.querySelector("#activities-hint");
+       if(total == 0) {
+          //stop form from submitting
+          event.preventDefault();
+          activityHint.style.display = "inline";
+       } else {
+          activityHint.style.display = "none";
+       }
+    }
+
+    validateActivity(totalPrice);
+
 })
 
 
