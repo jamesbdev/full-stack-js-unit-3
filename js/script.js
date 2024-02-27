@@ -133,35 +133,38 @@ handleCreditCard();
 const form = document.querySelector("form");
 
 form.addEventListener("submit", (event) => {
-    const nameHint = document.querySelector("#name-hint");
-    //validate the name input 
-    const nameValue = nameInput.value.trim();
-    if(nameValue.length == 0) {
-        //prevent the form from submiting
-        event.preventDefault();
-        //show error message 
-        nameHint.style.display = "inline";
-    } else {
-        //hide the hint message
-        nameHint.style.display = "none";
+    const validateName = () => {
+        const nameHint = document.querySelector("#name-hint");
+        //validate the name input 
+        const nameValue = nameInput.value.trim();
+        if(nameValue.length == 0) {
+            //prevent the form from submiting
+            event.preventDefault();
+            //show error message 
+            nameHint.style.display = "inline";
+        } else {
+            //hide the hint message
+            nameHint.style.display = "none";
+        }
     }
 
-    //email validation 
-    //get the email input value 
-    const emailInputValue = document.querySelector("#email").value;
-    const emailRegex = new RegExp(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
-    const emailIsMatch = emailRegex.test(emailInputValue); 
-    const emailHint = document.querySelector("#email-hint");
-    if (emailIsMatch == false) {
-        //stop the form from submitting
-        event.preventDefault();
-        //display the hint
-        emailHint.style.display = "inline";
-
-    } else {
-       //hide the hint
-       emailHint.style.display = "none";
+    const validateEmail = () => {
+        const emailInputValue = document.querySelector("#email").value;
+        const emailRegex = new RegExp(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
+        const emailIsMatch = emailRegex.test(emailInputValue); 
+        const emailHint = document.querySelector("#email-hint");
+        if (emailIsMatch == false) {
+            //stop the form from submitting
+            event.preventDefault();
+            //display the hint
+            emailHint.style.display = "inline";
+        } else {
+           //hide the hint
+           emailHint.style.display = "none";
+        }
     }
+    validateEmail();
+
 })
 
 
