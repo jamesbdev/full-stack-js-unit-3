@@ -145,6 +145,23 @@ form.addEventListener("submit", (event) => {
         //hide the hint message
         nameHint.style.display = "none";
     }
+
+    //email validation 
+    //get the email input value 
+    const emailInputValue = document.querySelector("#email").value;
+    const emailRegex = new RegExp(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
+    const emailIsMatch = emailRegex.test(emailInputValue); 
+    const emailHint = document.querySelector("#email-hint");
+    if (emailIsMatch == false) {
+        //stop the form from submitting
+        event.preventDefault();
+        //display the hint
+        emailHint.style.display = "inline";
+
+    } else {
+       //hide the hint
+       emailHint.style.display = "none";
+    }
 })
 
 
