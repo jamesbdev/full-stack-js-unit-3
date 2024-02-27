@@ -130,6 +130,22 @@ const handleCreditCard = () => {
 
 handleCreditCard();
 
+const form = document.querySelector("form");
+
+form.addEventListener("submit", (event) => {
+    const nameHint = document.querySelector("#name-hint");
+    //validate the name input 
+    if(nameInput.value.length == 0) {
+        //prevent the form from submiting
+        event.preventDefault();
+        //show error message 
+        nameHint.style.display = "inline";
+    } else {
+        //hide the hint message
+        nameHint.style.display = "none";
+    }
+})
+
 
 
 
