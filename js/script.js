@@ -135,7 +135,8 @@ const form = document.querySelector("form");
 form.addEventListener("submit", (event) => {
     const nameHint = document.querySelector("#name-hint");
     //validate the name input 
-    if(nameInput.value.length == 0) {
+    const nameValue = nameInput.value.trim();
+    if(nameValue.length == 0) {
         //prevent the form from submiting
         event.preventDefault();
         //show error message 
