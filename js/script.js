@@ -148,6 +148,8 @@ form.addEventListener("submit", (event) => {
         }
     }
 
+    validateName();
+
     const validateEmail = () => {
         const emailInputValue = document.querySelector("#email").value;
         const emailRegex = new RegExp(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
