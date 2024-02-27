@@ -181,6 +181,40 @@ form.addEventListener("submit", (event) => {
 
     validateActivity(totalPrice);
 
+    const validateCard = () => {
+        const paymentSelect = document.querySelector("#payment");
+        const paymentOptions = paymentSelect.querySelectorAll("option");
+        const cardNum = document.querySelector('#cc-num').value;
+        const cardNumHint = document.querySelector('#cc-hint');
+        //check if credit card has selected attribute
+        paymentOptions.forEach(option => {
+            //check if credit card payment is selected
+            if (option.value == "credit-card" && option.selected == true) {
+                //create Card regex
+                //check if card string matches regex
+                const creditCardPattern = /^(\d{13}|\d{14}|\d{15}|\d{16})$/;
+                //get the credit card number input value 
+                
+                if(creditCardPattern.test(cardNum) == false) {
+                //stop form from submitting
+                  event.preventDefault();
+                  //display error message
+                cardNumHint.style.display = "inline";
+                } else {
+                    //hide error message
+                    cardNumHint.style.display = "none";
+                }
+            }
+        })
+        //create a card regex
+        //create zip code regex
+        //create CVV regex
+
+
+    }
+
+    validateCard();
+
 })
 
 
