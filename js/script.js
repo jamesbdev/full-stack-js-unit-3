@@ -63,7 +63,7 @@ const handleTshirt = () => {
 handleTshirt();
 
 //Changes the total price according to which activities the user selects
-const showTotal = () => {
+
   const activityFieldset = document.querySelector("#activities");
   const costElement = document.querySelector("#activities-cost");
   let totalPrice = 0;
@@ -82,12 +82,6 @@ const showTotal = () => {
     }
     
   });
-  return totalPrice;
-}
-
-showTotal();
-
-
 
 //shows or hides the credit card / Paypal / Bitcoin sections when user selects a payment options
 const handleCreditCard = () => {
@@ -194,14 +188,16 @@ form.addEventListener("submit", (event) => {
       event.preventDefault();
       activityHint.style.display = "inline";
       activityFieldset.classList.add("not-valid");
+      activityFieldset.classList.remove("valid");
 
     } else {
       activityHint.style.display = "none";
       activityFieldset.classList.remove("not-valid");
+      activityFieldset.classList.add("valid");
     }
   };
 
-  validateActivity(showTotal());
+  validateActivity(totalPrice);
 
   //contains logic to validate the card number, zip code and CVV
   const validateCard = () => {
@@ -235,10 +231,12 @@ form.addEventListener("submit", (event) => {
             //display error message
             cardNumHint.style.display = "inline";
             cardInput.parentElement.classList.add("not-valid");
+            cardInput.parentElement.classList.remove("valid");
           } else {
             //hide error message
             cardNumHint.style.display = "none";
             cardInput.parentElement.classList.remove("not-valid");
+            cardInput.parentElement.classList.add("valid");
           }
         }
         checkCardNum();
@@ -252,11 +250,13 @@ form.addEventListener("submit", (event) => {
             event.preventDefault();
             zipHint.style.display = "inline";
             zipInput.parentElement.classList.add("not-valid");
+            zipHint.parentElement.classList.remove("valid");
 
           } else {
             //hide error message
             zipHint.style.display = "none";
             zipInput.parentElement.classList.remove("not-valid");
+            zipInput.parentElement.classList.add("valid");
           }
         }
         checkZip();
@@ -268,9 +268,11 @@ form.addEventListener("submit", (event) => {
             event.preventDefault();
             cvvHint.style.display = "inline";
             cvvInput.parentElement.classList.add("not-valid");
+            cvvInput.parentElement.classList.remove("valid");
           } else {
             cvvHint.style.display = "none";
             cvvInput.parentElement.classList.remove("not-valid");
+            cvvInput.parentElement.classList.add("valid");
           }
         }
         
