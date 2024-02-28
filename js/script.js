@@ -2,6 +2,7 @@ const nameInput = document.querySelector("#name");
 
 nameInput.focus();
 
+//hide or show the "other job role" text input field according to what the user selects as job role
 const displayTextField = () => {
   const otherJobInput = document.querySelector("#other-job-role");
   const jobRole = document.querySelector("#title");
@@ -25,7 +26,8 @@ const displayTextField = () => {
 
 displayTextField();
 
-//contains the logic for the T-shirt section
+//disables the T-shirt color select by default.
+//Then checks for the T-shirt style before presenting the T-shirt color options 
 const handleTshirt = () => {
   const colorSelect = document.querySelector("#color");
   const designSelect = document.querySelector("#design");
@@ -62,8 +64,7 @@ const handleTshirt = () => {
 
 handleTshirt();
 
-//Changes the total price according to which activities the user selects
-
+//Changes the total price in activities section according to which activities the user selects
   const activityFieldset = document.querySelector("#activities");
   const costElement = document.querySelector("#activities-cost");
   let totalPrice = 0;
@@ -83,7 +84,7 @@ handleTshirt();
     
   });
 
-//shows or hides the credit card / Paypal / Bitcoin sections when user selects a payment options
+//Shows or hides the credit card / Paypal / Bitcoin sections when user selects a payment option
 const handleCreditCard = () => {
   const paymentSelect = document.querySelector("#payment");
   const paymentOptions = paymentSelect.querySelectorAll("option");
@@ -132,6 +133,7 @@ handleCreditCard();
 
 const form = document.querySelector("form");
 
+//Form validation 
 form.addEventListener("submit", (event) => {
   //handle validation for the name input field
   const validateName = () => {
@@ -217,13 +219,11 @@ form.addEventListener("submit", (event) => {
     paymentOptions.forEach((option) => {
       //check if credit card payment is selected
       if (option.value == "credit-card" && option.selected == true) {
-        //create Card regex
-        //check if card string matches regex
         const creditCardPattern = /^(\d{13}|\d{14}|\d{15}|\d{16})$/;
         const zipPattern = /^\d{5}$/;
         const cvvPattern = /^\d{3}$/;
 
-        //checks if the entered card number matches the pattern;
+        //validate card number input field;
         const checkCardNum = () => {
           if (creditCardPattern.test(cardNum) == false) {
             //stop form from submitting
@@ -241,7 +241,7 @@ form.addEventListener("submit", (event) => {
         }
         checkCardNum();
 
-        //checks if the entered Zip value matches the pattern
+        //validate Zip input field 
         const checkZip = () => {
           const zipIsMatch = zipPattern.test(zipValue) 
           if (zipIsMatch == false ) {
@@ -261,7 +261,7 @@ form.addEventListener("submit", (event) => {
         }
         checkZip();
         
-        //Checks if the entered CVV code matches the pattern
+        //Validate CVV input field
         const checkCVV = () => {
           const cvvIsMatch = cvvPattern.test(verificationValue);
           if (cvvIsMatch == false ) {
@@ -275,7 +275,6 @@ form.addEventListener("submit", (event) => {
             cvvInput.parentElement.classList.add("valid");
           }
         }
-        
         checkCVV();
       }
     });
