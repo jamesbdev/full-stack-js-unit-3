@@ -67,21 +67,46 @@ handleTshirt();
 //Changes the total price in activities section according to which activities the user selects
   const activityFieldset = document.querySelector("#activities");
   const costElement = document.querySelector("#activities-cost");
+  const activities = document.querySelectorAll('#activities-box input');
+
   let totalPrice = 0;
   
   activityFieldset.addEventListener("change", (event) => {
     const element = event.target;
     const elementPrice = Number(element.dataset.cost);
+    const selectedActivityTime = event.target.dataset.dayAndTime;
+
     if (element.checked) {
       totalPrice += elementPrice;
       //update the DOM with the new price
       costElement.innerHTML = `Total: $${totalPrice}`;
+
+      activities.forEach(activity => {
+        //get the activity time 
+        const activityTime = activity.dataset.dayAndTime;
+   
+      //check if activity time is same with selected activity
+       if (activity.name !== element.name && activityTime == selectedActivityTime) {
+         activity.setAttribute("disabled", "");
+         activity.parentElement.classList.add("disabled");
+       } 
+     
+      })
     } else {
       totalPrice -= elementPrice;
       //update the DOM with the new price
       costElement.innerHTML = `Total: $${totalPrice}`;
+      activities.forEach(activity => {
+        const activityTime = activity.dataset.dayAndTime;
+          //check if activity time is same with selected activity
+        if (activity.name !== element.name && activityTime == selectedActivityTime) {
+          activity.removeAttribute("disabled");
+          activity.parentElement.classList.remove("disabled");
+        } 
+      })
     }
-    
+
+  
   });
 
 //Shows or hides the credit card / Paypal / Bitcoin sections when user selects a payment option
@@ -302,3 +327,30 @@ const addFocusState = () => {
 }
 
 addFocusState();
+
+//add email validation on key up
+//add event listener to email input field 
+//call validation function to validate in real time
+
+const emailInput = document.querySelector("#email");
+
+emailInput.addEventListener('keyup', (event) => {
+  const emailValue = event.target.value;
+  //validate email input value 
+    const emailRegex = new RegExp(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
+    const emailIsMatch = emailRegex.test(emailValue);
+    const emailHint = document.querySelector("#email-hint");
+    if (emailIsMatch == false) {
+      //stop the form from submitting
+      event.preventDefault();
+      //display the hint
+      emailHint.style.display = "inline";
+      emailInput.parentElement.classList.add("not-valid");
+      emailInput.parentElement.classList.remove("valid");
+    } else {
+      //hide the hint
+      emailHint.style.display = "none";
+      emailInput.parentElement.classList.remove("not-valid");
+      emailInput.parentElement.classList.add("valid");
+    }
+})
