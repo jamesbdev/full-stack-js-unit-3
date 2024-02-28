@@ -25,6 +25,7 @@ const displayTextField = () => {
 
 displayTextField();
 
+//contains the logic for the T-shirt section
 const handleTshirt = () => {
   const colorSelect = document.querySelector("#color");
   const designSelect = document.querySelector("#design");
@@ -36,7 +37,7 @@ const handleTshirt = () => {
     const selectedDesign = event.target.querySelector("option[selected]");
     //enable the color select element
     colorSelect.removeAttribute("disabled");
-
+//shows or hides the t-shirts color according to which style the user chooses
     const displayColor = (event) => {
       const designOptions = designSelect.querySelectorAll("option");
       const colorOptions = colorSelect.querySelectorAll("option");
@@ -61,25 +62,30 @@ const handleTshirt = () => {
 
 handleTshirt();
 
-//register for activities
+//Changes the total price according to which activities the user selects
+const showTotal = () => {
+  const activityFieldset = document.querySelector("#activities");
+  const costElement = document.querySelector("#activities-cost");
+  let totalPrice = 0;
+  
+  activityFieldset.addEventListener("change", (event) => {
+    const element = event.target;
+    const elementPrice = Number(element.dataset.cost);
+    if (element.checked) {
+      totalPrice += elementPrice;
+      //update the DOM with the new price
+      costElement.innerHTML = `Total: $${totalPrice}`;
+    } else {
+      totalPrice -= elementPrice;
+      //update the DOM with the new price
+      costElement.innerHTML = `Total: $${totalPrice}`;
+    }
+    
+  });
+  return totalPrice;
+}
 
-const activityFieldset = document.querySelector("#activities");
-const costElement = document.querySelector("#activities-cost");
-let totalPrice = 0;
-
-activityFieldset.addEventListener("change", (event) => {
-  const element = event.target;
-  const elementPrice = Number(element.dataset.cost);
-  if (element.checked) {
-    totalPrice += elementPrice;
-    //update the DOM with the new price
-    costElement.innerHTML = `Total: $${totalPrice}`;
-  } else {
-    totalPrice -= elementPrice;
-    //update the DOM with the new price
-    costElement.innerHTML = `Total: $${totalPrice}`;
-  }
-});
+showTotal();
 
 
 
@@ -143,9 +149,15 @@ form.addEventListener("submit", (event) => {
       event.preventDefault();
       //show error message
       nameHint.style.display = "inline";
+      //display extra validation notice
+      nameHint.parentElement.classList.add('not-valid');
+      nameHint.parentElement.classList.remove('valid');
     } else {
       //hide the hint message
       nameHint.style.display = "none";
+      //hide extra validation notice
+      nameHint.parentElement.classList.remove('not-valid');
+      nameHint.parentElement.classList.add('valid');
     }
   };
 
@@ -153,6 +165,7 @@ form.addEventListener("submit", (event) => {
   //handles the validation for the email input field
   const validateEmail = () => {
     const emailInputValue = document.querySelector("#email").value;
+    const emailInput = document.querySelector("#email");
     const emailRegex = new RegExp(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
     const emailIsMatch = emailRegex.test(emailInputValue);
     const emailHint = document.querySelector("#email-hint");
@@ -161,9 +174,13 @@ form.addEventListener("submit", (event) => {
       event.preventDefault();
       //display the hint
       emailHint.style.display = "inline";
+      emailInput.parentElement.classList.add("not-valid");
+      emailInput.parentElement.classList.remove("valid");
     } else {
       //hide the hint
       emailHint.style.display = "none";
+      emailInput.parentElement.classList.remove("not-valid");
+      emailInput.parentElement.classList.add("valid");
     }
   };
   validateEmail();
@@ -171,26 +188,33 @@ form.addEventListener("submit", (event) => {
   //show the error message if no activities are selected
   const validateActivity = (total) => {
     const activityHint = document.querySelector("#activities-hint");
+    const activityFieldset = document.querySelector("#activities");
     if (total == 0) {
       //stop form from submitting
       event.preventDefault();
       activityHint.style.display = "inline";
+      activityFieldset.classList.add("not-valid");
+
     } else {
       activityHint.style.display = "none";
+      activityFieldset.classList.remove("not-valid");
     }
   };
 
-  validateActivity(totalPrice);
+  validateActivity(showTotal());
 
   //contains logic to validate the card number, zip code and CVV
   const validateCard = () => {
     const paymentSelect = document.querySelector("#payment");
     const paymentOptions = paymentSelect.querySelectorAll("option");
     const cardNum = document.querySelector("#cc-num").value;
+    const cardInput = document.querySelector("#cc-num");
     const cardNumHint = document.querySelector("#cc-hint");
     const zipValue = document.querySelector("#zip").value;
+    const zipInput = document.querySelector("#zip");
     const zipHint = document.querySelector("#zip-hint");
     const verificationValue = document.querySelector("#cvv").value;
+    const cvvInput = document.querySelector("#cvv");
     const cvvHint = document.querySelector("#cvv-hint");
 
     //check if credit card has selected attribute
@@ -210,9 +234,11 @@ form.addEventListener("submit", (event) => {
             event.preventDefault();
             //display error message
             cardNumHint.style.display = "inline";
+            cardInput.parentElement.classList.add("not-valid");
           } else {
             //hide error message
             cardNumHint.style.display = "none";
+            cardInput.parentElement.classList.remove("not-valid");
           }
         }
         checkCardNum();
@@ -225,9 +251,12 @@ form.addEventListener("submit", (event) => {
             //show the error message
             event.preventDefault();
             zipHint.style.display = "inline";
+            zipInput.parentElement.classList.add("not-valid");
+
           } else {
             //hide error message
             zipHint.style.display = "none";
+            zipInput.parentElement.classList.remove("not-valid");
           }
         }
         checkZip();
@@ -238,8 +267,10 @@ form.addEventListener("submit", (event) => {
           if (cvvIsMatch == false ) {
             event.preventDefault();
             cvvHint.style.display = "inline";
+            cvvInput.parentElement.classList.add("not-valid");
           } else {
             cvvHint.style.display = "none";
+            cvvInput.parentElement.classList.remove("not-valid");
           }
         }
         
@@ -249,10 +280,9 @@ form.addEventListener("submit", (event) => {
   };
 
   validateCard();
+//add extra visual validation 
 
-
-
-});
+});//end submit event handler
 
 //adds focus state when checkbox inputs are in focus using tab
 const addFocusState = () => {
