@@ -352,10 +352,8 @@ const addFocusState = () => {
 
 addFocusState();
 
-//add email validation on key up
-//add event listener to email input field 
-//call validation function to validate in real time
 
+//email input validation on keyup event
 const emailInput = document.querySelector("#email");
 
 emailInput.addEventListener('keyup', (event) => {
