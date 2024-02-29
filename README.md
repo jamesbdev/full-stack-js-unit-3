@@ -1,7 +1,7 @@
 # full-stack-js-unit-3
-interactive form project
+## interactive form project
 
-Real time validation for exceeds grade: 
+### Real time validation for exceeds grade:  
 
 For the email input, I added real time validation. When the user starts to add information to the email input, it will validate what the user is inputing using the 'keyup' event on the email input.
 
