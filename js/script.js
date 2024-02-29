@@ -330,7 +330,7 @@ form.addEventListener("submit", (event) => {
   };
 
   validateCard();
-//add extra visual validation 
+
 
 });//end submit event handler
 
@@ -361,25 +361,11 @@ const emailInput = document.querySelector("#email");
 emailInput.addEventListener('keyup', (event) => {
   const emailValue = event.target.value;
   //validate email input value 
-    const emailRegex = new RegExp(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
-    const emailIsMatch = emailRegex.test(emailValue);
-    const emailHint = document.querySelector("#email-hint");
-    const errorMsg = document.createElement("span");  
-    errorMsg.setAttribute("id", "first-hint");
-    errorMsg.classList.add("hint");
-    errorMsg.classList.add("email-hint");
-    errorMsg.innerHTML = "Please enter an email address";
-    const firstHint = document.querySelector("#first-hint");
-    //check if the input value is empty and asks to enter an email
-    if (emailValue.trim() == "" && firstHint == null) {
-      //show first validation message
-      emailInput.insertAdjacentElement("afterend", errorMsg);
-      errorMsg.style.display = "inline";
-    } else if (emailIsMatch == false) {
-      //remove the empty field error message
-      if (firstHint !== null || firstHint !== undefined) {
-        firstHint.style.display = "none";
-      }
+  const emailRegex = new RegExp(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
+  const emailIsMatch = emailRegex.test(emailValue);
+  const emailHint = document.querySelector("#email-hint");
+
+  if (emailIsMatch == false) {
       //stop the form from submitting
       event.preventDefault();
       //display the hint
@@ -387,8 +373,6 @@ emailInput.addEventListener('keyup', (event) => {
       emailInput.parentElement.classList.add("not-valid");
       emailInput.parentElement.classList.remove("valid");
     } else {
-      //remove the empty field error message
-      errorMsg.style.display = "none";
       //hide the hint
       emailHint.style.display = "none";
       emailInput.parentElement.classList.remove("not-valid");
