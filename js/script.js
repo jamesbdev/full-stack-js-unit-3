@@ -190,21 +190,8 @@ form.addEventListener("submit", (event) => {
     const emailRegex = new RegExp(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
     const emailIsMatch = emailRegex.test(emailInputValue);
     const emailHint = document.querySelector("#email-hint");
-    const errorMsg = document.createElement('span');
-    //First validates the email input by asking a user to input an address if the content is empty
-    if (emailInputValue.trim() == "") { 
-      errorMsg.innerHTML = "Please enter an email address";
-      errorMsg.classList.add("email-hint")
-      errorMsg.classList.add("hint");
-      errorMsg.setAttribute("id", "first-hint");
-      //hide original hint 
-      emailHint.style.display = "none";
-      //append message to the DOM    
-      emailInput.insertAdjacentElement("afterend", errorMsg);
-      errorMsg.style.display = "inline";
-    } else if (emailIsMatch == false) {
-      //hide the blank input error message
-      errorMsg.style.display = "none";
+
+ if (emailIsMatch == false) {
       //stop the form from submitting
       event.preventDefault();
       //display the hint
@@ -263,10 +250,27 @@ form.addEventListener("submit", (event) => {
         const creditCardPattern = /^(\d{13}|\d{14}|\d{15}|\d{16})$/;
         const zipPattern = /^\d{5}$/;
         const cvvPattern = /^\d{3}$/;
+        const firstHint = document.createElement("span");
 
         //validate card number input field;
         const checkCardNum = () => {
-          if (creditCardPattern.test(cardNum) == false) {
+          //first validation
+          if (cardNum.trim() == "") {
+            //create error message
+            firstHint.classList.add("hint");
+            firstHint.innerText = "Please add a credit card number";
+            firstHint.style.display = "inline";
+            firstHint.setAttribute("id", "first-hint-card");
+            cardInput.insertAdjacentElement("afterend", firstHint);
+            //remove card pattern validation message
+            cardNumHint.style.display = "none";
+            //show visual validation
+            cardInput.parentElement.classList.add("not-valid");
+            cardInput.parentElement.classList.remove("valid");
+            //append error message
+          } else if (creditCardPattern.test(cardNum) == false) {
+            const cardFirstHint = document.querySelector("#first-hint-card");
+            cardFirstHint.remove();
             //stop form from submitting
             event.preventDefault();
             //display error message
@@ -278,6 +282,10 @@ form.addEventListener("submit", (event) => {
             cardNumHint.style.display = "none";
             cardInput.parentElement.classList.remove("not-valid");
             cardInput.parentElement.classList.add("valid");
+
+            //hide first hint message
+            const cardFirstHint = document.querySelector("#first-hint-card");
+            cardFirstHint.remove(); 
           }
         }
         checkCardNum();
@@ -356,12 +364,21 @@ emailInput.addEventListener('keyup', (event) => {
     const emailRegex = new RegExp(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
     const emailIsMatch = emailRegex.test(emailValue);
     const emailHint = document.querySelector("#email-hint");
-    const errorMsg = document.querySelector("#first-hint");
-
- if (emailIsMatch == false) {
+    const errorMsg = document.createElement("span");  
+    errorMsg.setAttribute("id", "first-hint");
+    errorMsg.classList.add("hint");
+    errorMsg.classList.add("email-hint");
+    errorMsg.innerHTML = "Please enter an email address";
+    const firstHint = document.querySelector("#first-hint");
+    //check if the input value is empty and asks to enter an email
+    if (emailValue.trim() == "" && firstHint == null) {
+      //show first validation message
+      emailInput.insertAdjacentElement("afterend", errorMsg);
+      errorMsg.style.display = "inline";
+    } else if (emailIsMatch == false) {
       //remove the empty field error message
-      if (errorMsg !== null && errorMsg !== undefined) {
-        errorMsg.style.display = "none";
+      if (firstHint !== null || firstHint !== undefined) {
+        firstHint.style.display = "none";
       }
       //stop the form from submitting
       event.preventDefault();
