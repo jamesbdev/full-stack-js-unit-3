@@ -190,7 +190,21 @@ form.addEventListener("submit", (event) => {
     const emailRegex = new RegExp(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
     const emailIsMatch = emailRegex.test(emailInputValue);
     const emailHint = document.querySelector("#email-hint");
-    if (emailIsMatch == false) {
+    const errorMsg = document.createElement('span');
+    //First validates the email input by asking a user to input an address if the content is empty
+    if (emailInputValue.trim() == "") { 
+      errorMsg.innerHTML = "Please enter an email address";
+      errorMsg.classList.add("email-hint")
+      errorMsg.classList.add("hint");
+      errorMsg.setAttribute("id", "first-hint");
+      //hide original hint 
+      emailHint.style.display = "none";
+      //append message to the DOM    
+      emailInput.insertAdjacentElement("afterend", errorMsg);
+      errorMsg.style.display = "inline";
+    } else if (emailIsMatch == false) {
+      //hide the blank input error message
+      errorMsg.style.display = "none";
       //stop the form from submitting
       event.preventDefault();
       //display the hint
@@ -198,6 +212,8 @@ form.addEventListener("submit", (event) => {
       emailInput.parentElement.classList.add("not-valid");
       emailInput.parentElement.classList.remove("valid");
     } else {
+      //hide the blank input error message
+      errorMsg.style.display = "none";
       //hide the hint
       emailHint.style.display = "none";
       emailInput.parentElement.classList.remove("not-valid");
@@ -340,7 +356,13 @@ emailInput.addEventListener('keyup', (event) => {
     const emailRegex = new RegExp(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
     const emailIsMatch = emailRegex.test(emailValue);
     const emailHint = document.querySelector("#email-hint");
-    if (emailIsMatch == false) {
+    const errorMsg = document.querySelector("#first-hint");
+
+ if (emailIsMatch == false) {
+      //remove the empty field error message
+      if (errorMsg !== null && errorMsg !== undefined) {
+        errorMsg.style.display = "none";
+      }
       //stop the form from submitting
       event.preventDefault();
       //display the hint
@@ -348,6 +370,8 @@ emailInput.addEventListener('keyup', (event) => {
       emailInput.parentElement.classList.add("not-valid");
       emailInput.parentElement.classList.remove("valid");
     } else {
+      //remove the empty field error message
+      errorMsg.style.display = "none";
       //hide the hint
       emailHint.style.display = "none";
       emailInput.parentElement.classList.remove("not-valid");
