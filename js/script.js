@@ -39,7 +39,7 @@ const handleTshirt = () => {
     const selectedDesign = event.target.querySelector("option[selected]");
     //enable the color select element
     colorSelect.removeAttribute("disabled");
-//shows or hides the t-shirts color according to which style the user chooses
+    //shows or hides the t-shirts color according to which style the user chooses
     const displayColor = (event) => {
       const designOptions = designSelect.querySelectorAll("option");
       const colorOptions = colorSelect.querySelectorAll("option");
