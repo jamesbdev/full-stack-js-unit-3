@@ -219,8 +219,6 @@ form.addEventListener("submit", (event) => {
       emailInput.parentElement.classList.remove("valid");
       return false;
     } else {
-      //hide the blank input error message
-      errorMsg.style.display = "none";
       //hide the hint
       emailHint.style.display = "none";
       emailInput.parentElement.classList.remove("not-valid");
@@ -228,9 +226,10 @@ form.addEventListener("submit", (event) => {
       return true;
     }
   };
-  validateEmail();
   //submits the form here
+
   const isEmailValid = validateEmail();
+
 
   //show the error message if no activities are selected
   const validateActivity = (total) => {
@@ -281,12 +280,16 @@ form.addEventListener("submit", (event) => {
         const checkCardNum = () => {
           //first validation
           if (cardNum.trim() == "") {
+            event.preventDefault();
             //create error message
             firstHint.classList.add("hint");
             firstHint.innerText = "Please add a credit card number";
             firstHint.style.display = "inline";
             firstHint.setAttribute("id", "first-hint-card");
-            cardInput.insertAdjacentElement("afterend", firstHint);
+            const cardFirstHint = document.querySelector("#first-hint-card");
+            if(cardFirstHint == undefined || cardFirstHint == null) {
+              cardInput.insertAdjacentElement("afterend", firstHint);
+            }
             //remove card pattern validation message
             cardNumHint.style.display = "none";
             //show visual validation
@@ -294,6 +297,7 @@ form.addEventListener("submit", (event) => {
             cardInput.parentElement.classList.remove("valid");
             return false;
           } else if (creditCardPattern.test(cardNum) == false) {
+            event.preventDefault();
             const cardFirstHint = document.querySelector("#first-hint-card");
             if(cardFirstHint !== null && cardFirstHint !== undefined) {
               cardFirstHint.remove();
@@ -325,6 +329,7 @@ form.addEventListener("submit", (event) => {
         const checkZip = () => {
           const zipIsMatch = zipPattern.test(zipValue) 
           if (zipIsMatch == false ) {
+            event.preventDefault();
             zipHint.style.display = "inline";
             zipInput.parentElement.classList.add("not-valid");
             zipHint.parentElement.classList.remove("valid");
@@ -345,6 +350,7 @@ form.addEventListener("submit", (event) => {
         const checkCVV = () => {
           const cvvIsMatch = cvvPattern.test(verificationValue);
           if (cvvIsMatch == false ) {
+            event.preventDefault();
             cvvHint.style.display = "inline";
             cvvInput.parentElement.classList.add("not-valid");
             cvvInput.parentElement.classList.remove("valid");
@@ -359,35 +365,12 @@ form.addEventListener("submit", (event) => {
         checkCVV();
         const isVerificationValid = checkCVV();
   
-        
-        //check if any of the card number, zip code or card verification number fields are invalid
-        //if they are invalid return false
-        //else return true
-        const checkIfCardIsValid = () => {
-          if (isVerificationValid == false || isZipValid == false || isCardNumValid == false) {
-            return false;
-          } else {
-            return true;
-          }
-         }
-         checkIfCardIsValid();
-   
+
       }//end check for credit card payment
     });//end for each
-
-   
   };//end validate card
 
   validateCard();
-  const isCardValid = validateCard();
-
-
-   if (isNameValid == false || isEmailValid == false || isActivityValid == false || isCardValid == false) {
-     //stop form from submitting;
-     event.preventDefault();
-   }
- 
-
 
 });//end submit event handler
 
