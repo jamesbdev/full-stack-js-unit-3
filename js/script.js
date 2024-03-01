@@ -178,9 +178,9 @@ const form = document.querySelector("form");
 form.addEventListener("submit", (event) => {
   //handle validation for the name input field
   const validateName = () => {
-    const nameHint = document.querySelector("#name-hint");
-    //validate the name input
-    const nameValue = nameInput.value.trim();
+  const nameHint = document.querySelector("#name-hint");
+  //validate the name input
+  const nameValue = nameInput.value.trim();
     if (nameValue.length == 0) {
       //prevent the form from submiting
       event.preventDefault();
@@ -189,16 +189,19 @@ form.addEventListener("submit", (event) => {
       //display extra validation notice
       nameHint.parentElement.classList.add('not-valid');
       nameHint.parentElement.classList.remove('valid');
+      return false;
     } else {
       //hide the hint message
       nameHint.style.display = "none";
       //hide extra validation notice
       nameHint.parentElement.classList.remove('not-valid');
       nameHint.parentElement.classList.add('valid');
+      return true;
     }
   };
-
   validateName();
+  const isNameValid = validateName();
+
   //handles the validation for the email input field
   const validateEmail = () => {
     const emailInputValue = document.querySelector("#email").value;
@@ -207,13 +210,14 @@ form.addEventListener("submit", (event) => {
     const emailIsMatch = emailRegex.test(emailInputValue);
     const emailHint = document.querySelector("#email-hint");
 
- if (emailIsMatch == false) {
+    if (emailIsMatch == false) {
       //stop the form from submitting
       event.preventDefault();
       //display the hint
       emailHint.style.display = "inline";
       emailInput.parentElement.classList.add("not-valid");
       emailInput.parentElement.classList.remove("valid");
+      return false;
     } else {
       //hide the blank input error message
       errorMsg.style.display = "none";
@@ -221,9 +225,12 @@ form.addEventListener("submit", (event) => {
       emailHint.style.display = "none";
       emailInput.parentElement.classList.remove("not-valid");
       emailInput.parentElement.classList.add("valid");
+      return true;
     }
   };
   validateEmail();
+  //submits the form here
+  const isEmailValid = validateEmail();
 
   //show the error message if no activities are selected
   const validateActivity = (total) => {
@@ -235,17 +242,19 @@ form.addEventListener("submit", (event) => {
       activityHint.style.display = "inline";
       activityFieldset.classList.add("not-valid");
       activityFieldset.classList.remove("valid");
+      return false;
 
     } else {
       activityHint.style.display = "none";
       activityFieldset.classList.remove("not-valid");
       activityFieldset.classList.add("valid");
+      return true;
     }
   };
-
   validateActivity(totalPrice);
+  const isActivityValid = validateActivity(totalPrice);
 
-  //contains logic to validate the card number, zip code and CVV
+  //Validates the card number, zip code and card verification number
   const validateCard = () => {
     const paymentSelect = document.querySelector("#payment");
     const paymentOptions = paymentSelect.querySelectorAll("option");
@@ -283,16 +292,17 @@ form.addEventListener("submit", (event) => {
             //show visual validation
             cardInput.parentElement.classList.add("not-valid");
             cardInput.parentElement.classList.remove("valid");
-            //append error message
+            return false;
           } else if (creditCardPattern.test(cardNum) == false) {
             const cardFirstHint = document.querySelector("#first-hint-card");
-            cardFirstHint.remove();
-            //stop form from submitting
-            event.preventDefault();
+            if(cardFirstHint !== null && cardFirstHint !== undefined) {
+              cardFirstHint.remove();
+            }
             //display error message
             cardNumHint.style.display = "inline";
             cardInput.parentElement.classList.add("not-valid");
             cardInput.parentElement.classList.remove("valid");
+            return false;
           } else {
             //hide error message
             cardNumHint.style.display = "none";
@@ -301,51 +311,82 @@ form.addEventListener("submit", (event) => {
 
             //hide first hint message
             const cardFirstHint = document.querySelector("#first-hint-card");
-            cardFirstHint.remove(); 
+            if (cardFirstHint !== null && cardFirstHint !== undefined) {
+              cardFirstHint.remove(); 
+            }
+            return true;
           }
         }
         checkCardNum();
+        const isCardNumValid = checkCardNum();
+       
 
         //validate Zip input field 
         const checkZip = () => {
           const zipIsMatch = zipPattern.test(zipValue) 
           if (zipIsMatch == false ) {
-            //prevent form from submitting
-            //show the error message
-            event.preventDefault();
             zipHint.style.display = "inline";
             zipInput.parentElement.classList.add("not-valid");
             zipHint.parentElement.classList.remove("valid");
+            return false;
 
           } else {
             //hide error message
             zipHint.style.display = "none";
             zipInput.parentElement.classList.remove("not-valid");
             zipInput.parentElement.classList.add("valid");
+            return true;
           }
         }
+        const isZipValid = checkZip();
         checkZip();
         
         //Validate CVV input field
         const checkCVV = () => {
           const cvvIsMatch = cvvPattern.test(verificationValue);
           if (cvvIsMatch == false ) {
-            event.preventDefault();
             cvvHint.style.display = "inline";
             cvvInput.parentElement.classList.add("not-valid");
             cvvInput.parentElement.classList.remove("valid");
+            return false;
           } else {
             cvvHint.style.display = "none";
             cvvInput.parentElement.classList.remove("not-valid");
             cvvInput.parentElement.classList.add("valid");
+            return true;
           }
         }
         checkCVV();
-      }
-    });
-  };
+        const isVerificationValid = checkCVV();
+  
+        
+        //check if any of the card number, zip code or card verification number fields are invalid
+        //if they are invalid return false
+        //else return true
+        const checkIfCardIsValid = () => {
+          if (isVerificationValid == false || isZipValid == false || isCardNumValid == false) {
+            return false;
+          } else {
+            return true;
+          }
+         }
+         checkIfCardIsValid();
+   
+      }//end check for credit card payment
+    });//end for each
+
+   
+  };//end validate card
 
   validateCard();
+  const isCardValid = validateCard();
+
+
+   if (isNameValid == false || isEmailValid == false || isActivityValid == false || isCardValid == false) {
+     //stop form from submitting;
+     event.preventDefault();
+   }
+ 
 
 
 });//end submit event handler
@@ -357,11 +398,11 @@ const addFocusState = () => {
       //add a focus class when element is focused
       input.addEventListener('focus', (event) => {
         //add a focus class to the parent label element
-        input.closest("label").classList.add('focus');
+      input.closest("label").classList.add('focus');
       });
       //remove focus class when element is blurred
       input.addEventListener("blur", (event) => {
-        input.closest("label").classList.remove('focus');
+      input.closest("label").classList.remove('focus');
       });
     });
 }
