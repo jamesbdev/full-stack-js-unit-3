@@ -39,6 +39,9 @@ const handleTshirt = () => {
     const selectedDesign = event.target.querySelector("option[selected]");
     //enable the color select element
     colorSelect.removeAttribute("disabled");
+    //get the options for specific t-shirt style data-attributes
+    const jsPunsColors = document.querySelectorAll('#color option[data-theme="js puns"]');
+    const heartJsColors = document.querySelectorAll('#color option[data-theme="heart js"]');
     //shows or hides the t-shirts color according to which style the user chooses
     const displayColor = (event) => {
       const designOptions = designSelect.querySelectorAll("option");
@@ -48,13 +51,26 @@ const handleTshirt = () => {
         if (option.selected) {
           const selectedValue = option.value;
           //hide all options that have a data-attribute of heart-js
-          colorOptions.forEach((color) => {
+          colorOptions.forEach((color, index) => {
             if (color.dataset.theme !== selectedValue) {
               color.setAttribute("hidden", "");
             } else {
               color.removeAttribute("hidden");
             }
-          });
+          });//end for each
+
+         //checks which style is selected and reselects a t-shirt with the correct data-attribute
+          if(option.value == "js puns") {
+            colorOptions.forEach(color => {
+              color.removeAttribute("selected");
+            });
+            jsPunsColors[0].setAttribute("selected", "");
+          } else {
+            colorOptions.forEach(color => {
+              color.removeAttribute("selected");
+            })
+            heartJsColors[0].setAttribute("selected", "");
+          }
         }
       });
     };
